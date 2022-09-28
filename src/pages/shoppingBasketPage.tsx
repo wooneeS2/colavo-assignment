@@ -3,8 +3,10 @@ import { useQuery } from '@tanstack/react-query';
 import { getItemDatas } from 'api/itemApi';
 import { Link } from 'react-router-dom';
 
+const itemCounts = [...new Array(10)].map((_, i) => i + 1);
+
 function ShoppingBasketPage() {
-  const [selectedItems] = React.useState(
+  const [selectedItems, setSelectedItems] = React.useState(
     JSON.parse(sessionStorage.getItem('selectedItems')!)
   );
   const [selectedSales] = React.useState(
@@ -17,6 +19,24 @@ function ShoppingBasketPage() {
     items = Object.values(data?.data.items);
     discounts = Object.values(data?.data.discounts);
   }
+
+  const changeItemCount = (
+    e: React.ChangeEvent<HTMLSelectElement>,
+    name: string
+  ) => {
+    let findIndex = selectedItems.findIndex((elem: any) => elem.name === name);
+
+    setSelectedItems((current: any) => {
+      const newItems = [...current];
+      newItems[findIndex].count = Number(e.target.value);
+      return newItems;
+    });
+  };
+
+  React.useEffect(() => {
+    selectedItems &&
+      selectedItems.forEach((elem: any) => Object.assign(elem, { count: 1 }));
+  }, []);
 
   return (
     <>
@@ -35,9 +55,25 @@ function ShoppingBasketPage() {
               return;
             }
             return (
-              <li key={elem.name}>
-                {elem.name}/{elem.price}
-              </li>
+              <div key={elem.name}>
+                <li>
+                  {elem.name}/{elem.price}
+                </li>
+                <select
+                  name="itemCount"
+                  id="itemCont"
+                  defaultValue={elem.count}
+                  onChange={e => {
+                    changeItemCount(e, elem.name);
+                  }}
+                >
+                  {itemCounts.map(item => (
+                    <option key={item} value={item}>
+                      {item}
+                    </option>
+                  ))}
+                </select>
+              </div>
             );
           })}
       </div>
