@@ -1,8 +1,15 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { getItemDatas } from '../api/itemApi';
+import { getItemDatas } from 'api/itemApi';
+import { Link } from 'react-router-dom';
 
 function ShoppingBasketPage() {
+  const [selectedItems] = React.useState(
+    JSON.parse(sessionStorage.getItem('selectedItems')!)
+  );
+  const [selectedSales] = React.useState(
+    JSON.parse(sessionStorage.getItem('selectedSales')!)
+  );
   const { data, isLoading } = useQuery(['getItemsData'], () => getItemDatas());
   let items;
   let discounts;
@@ -14,28 +21,38 @@ function ShoppingBasketPage() {
   return (
     <>
       <div>
-        <button>시술</button>
-        <button>할인</button>
+        <Link to={'select-items'} state={{ item: items }}>
+          시술
+        </Link>
+        <Link to={'select-sales'} state={{ sale: discounts }}>
+          할인
+        </Link>
       </div>
       <div>
-        {items?.map((elem: any) => {
-          return (
-            <li key={elem.name}>
-              {elem.name}/{elem.price}
-            </li>
-          );
-        })}
+        {selectedItems &&
+          selectedItems.map((elem: any) => {
+            if (elem.name === '') {
+              return;
+            }
+            return (
+              <li key={elem.name}>
+                {elem.name}/{elem.price}
+              </li>
+            );
+          })}
       </div>
       <hr></hr>
-      <div>
-        {discounts?.map((elem: any) => {
+      {selectedSales &&
+        selectedSales.map((elem: any) => {
+          if (elem.name === '') {
+            return;
+          }
           return (
             <li key={elem.name}>
               {elem.name}/{elem.rate}
             </li>
           );
         })}
-      </div>
       <div>
         <p>합계</p>
         <p>0원</p>

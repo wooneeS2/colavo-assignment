@@ -1,11 +1,11 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import ShoppingBasketPage from './pages/shoppingBasketPage';
+import RoutePage from 'routePage';
 
 function App() {
   return (
     <BrowserRouter>
-      <ShoppingBasketPage />
+      <RoutePage />
     </BrowserRouter>
   );
 }
