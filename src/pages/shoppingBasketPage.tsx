@@ -2,6 +2,7 @@ import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getItemDatas } from 'api/itemApi';
 import { Link } from 'react-router-dom';
+import Modal from 'react-modal';
 
 const itemCounts = [...new Array(10)].map((_, i) => i + 1);
 
@@ -12,6 +13,8 @@ function ShoppingBasketPage() {
   const [selectedSales] = React.useState(
     JSON.parse(sessionStorage.getItem('selectedSales')!)
   );
+  const [isOpen, setIsOpen] = React.useState(false);
+
   const { data, isLoading } = useQuery(['getItemsData'], () => getItemDatas());
   let items;
   let discounts;
@@ -40,6 +43,28 @@ function ShoppingBasketPage() {
 
   return (
     <>
+      <Modal isOpen={isOpen}>
+        {selectedItems &&
+          selectedItems.map((elem: any) => {
+            if (elem.name === '') {
+              return;
+            }
+            return (
+              <div key={elem.name}>
+                <li>
+                  {elem.name}/{elem.price}
+                </li>
+              </div>
+            );
+          })}
+        <button
+          onClick={() => {
+            setIsOpen(false);
+          }}
+        >
+          확인
+        </button>
+      </Modal>
       <div>
         <Link to={'select-items'} state={{ item: items }}>
           시술
@@ -84,9 +109,18 @@ function ShoppingBasketPage() {
             return;
           }
           return (
-            <li key={elem.name}>
-              {elem.name}/{elem.rate}
-            </li>
+            <div key={elem.name}>
+              <li>
+                {elem.name}/{elem.rate}
+              </li>
+              <button
+                onClick={() => {
+                  setIsOpen(true);
+                }}
+              >
+                수정
+              </button>
+            </div>
           );
         })}
       <div>
