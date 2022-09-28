@@ -19,6 +19,7 @@ function ShoppingBasketPage() {
     JSON.parse(sessionStorage.getItem('selectedSales')!)
   );
   const [isOpen, setIsOpen] = React.useState(false);
+  const [currentSale, setCurrentSalse] = React.useState('');
 
   const { data, isLoading } = useQuery(['getItemsData'], () => getItemDatas());
   let items;
@@ -45,23 +46,20 @@ function ShoppingBasketPage() {
   React.useEffect(() => {
     selectedItems &&
       selectedItems.forEach((elem: any) => Object.assign(elem, { count: 1 }));
+
     selectedSales &&
       selectedItems.forEach((elem: any) =>
-        Object.assign(elem, {
-          rate: selectedSales.reduce((a: number, b: saleType) => {
-            return a + b.rate;
-          }, 0),
-        })
+        Object.assign(elem, { selectedSales })
       );
   }, []);
-
-  console.log(selectedItems);
 
   return (
     <>
       <Modal isOpen={isOpen}>
         {selectedItems &&
           selectedItems.map((elem: any) => {
+            console.log(elem);
+
             if (elem.name === '') {
               return;
             }
@@ -71,12 +69,13 @@ function ShoppingBasketPage() {
                   {elem.name}/{elem.price}
                 </li>
                 <p>
-                  {selectedItems.findIndex(
-                    (item: any) => item.name === elem.name
-                  ) === -1
-                    ? 'X'
-                    : 'O'}
+                  {elem.selectedSales.findIndex(
+                    (el: any) => el.name === currentSale
+                  ) !== -1
+                    ? 'O'
+                    : 'X'}
                 </p>
+                <p>{currentSale}</p>
               </div>
             );
           })}
@@ -139,6 +138,7 @@ function ShoppingBasketPage() {
               <button
                 onClick={() => {
                   setIsOpen(true);
+                  setCurrentSalse(elem.name);
                 }}
               >
                 수정
