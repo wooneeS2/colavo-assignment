@@ -1,0 +1,29 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    //esLint 규칙 적용하는 곳
+    //나중에 정의된 옵션일수록 높은 우선순위
+    "plugin:prettier/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    //타입 정보를 필요로 하는 규칙들을 사용하고 싶으면 설정해야 하는 속성
+    //tsconfig.json위치 적기
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "project": "tsconfig.json"
+  },
+  "plugins": ["react", "@typescript-eslint"],
+  "rules": {
+    "arrow-parens": "off",
+    "no-console": "off",
+    "no-unused-vars": "error"
+  },
+  "ignorePatterns": ["dist/", "node_modules/"]
+}
