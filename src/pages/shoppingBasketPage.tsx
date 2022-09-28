@@ -6,6 +6,11 @@ import Modal from 'react-modal';
 
 const itemCounts = [...new Array(10)].map((_, i) => i + 1);
 
+type saleType = {
+  name: string;
+  rate: number;
+};
+
 function ShoppingBasketPage() {
   const [selectedItems, setSelectedItems] = React.useState(
     JSON.parse(sessionStorage.getItem('selectedItems')!)
@@ -27,8 +32,9 @@ function ShoppingBasketPage() {
     e: React.ChangeEvent<HTMLSelectElement>,
     name: string
   ) => {
-    let findIndex = selectedItems.findIndex((elem: any) => elem.name === name);
-
+    let findIndex = selectedItems.findIndex(
+      (elem: saleType) => elem.name === name
+    );
     setSelectedItems((current: any) => {
       const newItems = [...current];
       newItems[findIndex].count = Number(e.target.value);
@@ -39,7 +45,17 @@ function ShoppingBasketPage() {
   React.useEffect(() => {
     selectedItems &&
       selectedItems.forEach((elem: any) => Object.assign(elem, { count: 1 }));
+    selectedSales &&
+      selectedItems.forEach((elem: any) =>
+        Object.assign(elem, {
+          rate: selectedSales.reduce((a: number, b: saleType) => {
+            return a + b.rate;
+          }, 0),
+        })
+      );
   }, []);
+
+  console.log(selectedItems);
 
   return (
     <>
@@ -54,6 +70,13 @@ function ShoppingBasketPage() {
                 <li>
                   {elem.name}/{elem.price}
                 </li>
+                <p>
+                  {selectedItems.findIndex(
+                    (item: any) => item.name === elem.name
+                  ) === -1
+                    ? 'X'
+                    : 'O'}
+                </p>
               </div>
             );
           })}
