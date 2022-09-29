@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getItemDatas } from 'api/itemApi';
 import { Link } from 'react-router-dom';
 import Modal from 'react-modal';
+import { moneyConvertToKRW } from 'utils/moneyConvertToKRW';
 
 const itemCounts = [...new Array(10)].map((_, i) => i + 1);
 
@@ -193,10 +194,12 @@ function ShoppingBasketPage() {
       <div>
         <p>합계</p>
         <p>
-          {selectedItems &&
-            selectedItems.reduce((a: any, b: any) => {
-              return a + b.price * b.count;
-            }, 0)}
+          {moneyConvertToKRW(
+            selectedItems &&
+              selectedItems.reduce((a: any, b: any) => {
+                return a + b.price * b.count;
+              }, 0)
+          )}
           원
         </p>
       </div>
