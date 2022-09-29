@@ -1,3 +1,4 @@
+import { PageContainer } from 'design/commonStyles';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
@@ -29,7 +30,7 @@ function SelectSalesPage() {
   }, [selectedSales]);
 
   return (
-    <>
+    <PageContainer>
       <div>
         {sales?.map((elem: any) => {
           return (
@@ -56,7 +57,7 @@ function SelectSalesPage() {
       >
         완료
       </Link>
-    </>
+    </PageContainer>
   );
 }
 

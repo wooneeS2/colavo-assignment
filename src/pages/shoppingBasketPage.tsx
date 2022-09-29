@@ -1,9 +1,23 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getItemDatas } from 'api/itemApi';
-import { Link } from 'react-router-dom';
 import Modal from 'react-modal';
 import { moneyConvertToKRW } from 'utils/moneyConvertToKRW';
+import { PageContainer } from 'design/commonStyles';
+import {
+  HrStyle,
+  ItemListSelectBox,
+  ItemListStyle,
+  ItemStyleDiv,
+  MainMenuButton,
+  MainMenuDiv,
+  MainTime,
+  MainUserDiv,
+  MainUserName,
+  SaleEditButton,
+} from 'design/shoppingBasketStyles/shoppingBasketStyles';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
 
 const itemCounts = [...new Array(10)].map((_, i) => i + 1);
 
@@ -62,7 +76,7 @@ function ShoppingBasketPage() {
   }, []);
 
   return (
-    <>
+    <PageContainer>
       <Modal isOpen={isOpen}>
         {selectedItems &&
           selectedItems.map((elem: itemType) => {
@@ -123,14 +137,30 @@ function ShoppingBasketPage() {
           확인
         </button>
       </Modal>
-      <div>
-        <Link to={'select-items'} state={{ item: items }}>
-          시술
-        </Link>
-        <Link to={'select-sales'} state={{ sale: discounts }}>
-          할인
-        </Link>
-      </div>
+
+      <MainUserDiv>
+        <MainUserName>김원희</MainUserName>
+        <MainTime>{new Date().toLocaleString('ko-kr').slice(0, 20)}</MainTime>
+      </MainUserDiv>
+      <MainMenuDiv>
+        <MainMenuButton
+          to={'select-items'}
+          state={{ item: items }}
+          type={'item'}
+        >
+          <FontAwesomeIcon icon={faCirclePlus} />
+          <span>시술</span>
+        </MainMenuButton>
+        <MainMenuButton
+          to={'select-sales'}
+          state={{ sale: discounts }}
+          type={'sale'}
+        >
+          <FontAwesomeIcon icon={faCirclePlus} />
+          <span>할인</span>
+        </MainMenuButton>
+      </MainMenuDiv>
+      <HrStyle />
       <div>
         {selectedItems &&
           selectedItems.map((elem: itemType) => {
@@ -138,25 +168,28 @@ function ShoppingBasketPage() {
               return;
             }
             return (
-              <div key={elem.name}>
-                <li>
-                  {elem.name}/{elem.price}
-                </li>
-                <select
-                  name="itemCount"
-                  id="itemCont"
-                  defaultValue={elem.count}
-                  onChange={e => {
-                    changeItemCount(e, elem.name);
-                  }}
-                >
-                  {itemCounts.map(item => (
-                    <option key={item} value={item}>
-                      {item}
-                    </option>
-                  ))}
-                </select>
-              </div>
+              <ItemStyleDiv key={elem.name}>
+                <ItemListStyle>
+                  {elem.name}
+                  <p>{moneyConvertToKRW(elem.price)}원</p>
+                </ItemListStyle>
+                <div>
+                  <ItemListSelectBox
+                    name="itemCount"
+                    id="itemCont"
+                    defaultValue={elem.count}
+                    onChange={e => {
+                      changeItemCount(e, elem.name);
+                    }}
+                  >
+                    {itemCounts.map(item => (
+                      <option key={item} value={item}>
+                        {item}
+                      </option>
+                    ))}
+                  </ItemListSelectBox>
+                </div>
+              </ItemStyleDiv>
             );
           })}
       </div>
@@ -167,9 +200,10 @@ function ShoppingBasketPage() {
             return;
           }
           return (
-            <div key={elem.name}>
-              <li>
-                {elem.name}/{elem.rate}
+            <ItemStyleDiv key={elem.name}>
+              <ItemListStyle>
+                {elem.name}
+                <p>할인률 : {elem.rate * 100}%</p>
                 {/* <p>
                   {selectedItems.map((elem: any) => {
                     elem.selectedSales
@@ -182,18 +216,20 @@ function ShoppingBasketPage() {
                       });
                   })}
                 </p> */}
-              </li>
-              <button
+              </ItemListStyle>
+              <SaleEditButton
                 onClick={() => {
                   setIsOpen(true);
                   setCurrentSale({ name: elem.name, rate: elem.rate });
                 }}
               >
                 수정
-              </button>
-            </div>
+              </SaleEditButton>
+            </ItemStyleDiv>
           );
         })}
+      <HrStyle />
+
       <div>
         <p>합계</p>
         <p>
@@ -205,8 +241,9 @@ function ShoppingBasketPage() {
             )}
           원
         </p>
+        <button>다음</button>
       </div>
-    </>
+    </PageContainer>
   );
 }
 
