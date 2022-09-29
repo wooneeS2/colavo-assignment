@@ -9,12 +9,15 @@ import {
   ItemListSelectBox,
   ItemListStyle,
   ItemStyleDiv,
+  MainBottomDiv,
   MainMenuButton,
   MainMenuDiv,
   MainTime,
   MainUserDiv,
   MainUserName,
+  NextButton,
   SaleEditButton,
+  TotalAmountTitle,
 } from 'design/shoppingBasketStyles/shoppingBasketStyles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
@@ -230,19 +233,21 @@ function ShoppingBasketPage() {
         })}
       <HrStyle />
 
-      <div>
-        <p>합계</p>
-        <p>
-          {selectedItems &&
-            moneyConvertToKRW(
-              selectedItems.reduce((a: any, b: itemType) => {
-                return a + b.price * b.count;
-              }, 0)
-            )}
-          원
-        </p>
-        <button>다음</button>
-      </div>
+      <MainBottomDiv>
+        <div>
+          <p>합계</p>
+          <TotalAmountTitle>
+            {selectedItems &&
+              moneyConvertToKRW(
+                selectedItems.reduce((a: any, b: itemType) => {
+                  return a + b.price * b.count;
+                }, 0)
+              )}
+            원
+          </TotalAmountTitle>
+        </div>
+        <NextButton>다음</NextButton>
+      </MainBottomDiv>
     </PageContainer>
   );
 }

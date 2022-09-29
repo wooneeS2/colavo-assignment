@@ -89,3 +89,35 @@ export const SaleEditButton = styled.button`
   padding: 4px;
   margin: 6px;
 `;
+
+export const MainBottomDiv = styled.div`
+  width: 100%;
+  height: 100px;
+  position: absolute;
+  bottom: 1px;
+  div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 10px;
+    font-size: 1rem;
+    color: ${props => props.theme.mainGrey};
+  }
+`;
+
+export const TotalAmountTitle = styled.p`
+  font-size: 1.5rem;
+  color: ${props => props.theme.mainBlack};
+`;
+
+export const NextButton = styled.button`
+  width: 95%;
+  height: 40px;
+  border: none;
+  margin: 10px;
+  background-color: ${props => props.theme.backgroundPurple};
+  color: ${props => props.theme.mainWhite};
+  border-radius: 4px;
+  text-align: center;
+  font-weight: 400;
+`;
