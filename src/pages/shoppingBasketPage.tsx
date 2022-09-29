@@ -55,11 +55,6 @@ function ShoppingBasketPage() {
   };
 
   React.useEffect(() => {
-    selectedItems &&
-      selectedItems.forEach((elem: itemType) =>
-        Object.assign(elem, { count: 1 })
-      );
-
     selectedSales &&
       selectedItems.forEach((elem: saleType) =>
         Object.assign(elem, { selectedSales })
@@ -81,7 +76,6 @@ function ShoppingBasketPage() {
                     value={elem.name}
                     id={elem.name}
                     onClick={(e: React.MouseEvent) => {
-                      console.log(e);
                       const target = e.target as HTMLLIElement;
                       const temp = elem.selectedSales.findIndex(
                         (el: any) => el.name === currentSale.name
@@ -203,12 +197,12 @@ function ShoppingBasketPage() {
       <div>
         <p>합계</p>
         <p>
-          {moneyConvertToKRW(
-            selectedItems &&
+          {selectedItems &&
+            moneyConvertToKRW(
               selectedItems.reduce((a: any, b: itemType) => {
                 return a + b.price * b.count;
               }, 0)
-          )}
+            )}
           원
         </p>
       </div>

@@ -6,7 +6,7 @@ function SelectItemPage() {
   const location = useLocation();
   const item: Array<any> = location.state?.item;
   const [selectedItem, setSelectedItem] = React.useState([
-    { name: '', price: 0 },
+    { name: '', price: 0, count: 0 },
   ]);
 
   const onClickItems = ([name, price]: any) => {
@@ -18,7 +18,7 @@ function SelectItemPage() {
         });
         return newArr;
       } else {
-        newItem.push({ name: name, price: price });
+        newItem.push({ name: name, price: price, count: 1 });
         return newItem;
       }
     });
