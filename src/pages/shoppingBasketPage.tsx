@@ -19,7 +19,10 @@ function ShoppingBasketPage() {
     JSON.parse(sessionStorage.getItem('selectedSales')!)
   );
   const [isOpen, setIsOpen] = React.useState(false);
-  const [currentSale, setCurrentSale] = React.useState({ name: '', rate: 0 });
+  const [currentSale, setCurrentSale] = React.useState<saleType>({
+    name: '',
+    rate: 0,
+  });
 
   const { data, isLoading } = useQuery(['getItemsData'], () => getItemDatas());
   let items;
@@ -58,7 +61,6 @@ function ShoppingBasketPage() {
       <Modal isOpen={isOpen}>
         {selectedItems &&
           selectedItems.map((elem: any) => {
-            console.log(elem);
             if (elem.name === '') {
               return;
             }
@@ -164,6 +166,18 @@ function ShoppingBasketPage() {
             <div key={elem.name}>
               <li>
                 {elem.name}/{elem.rate}
+                {/* <p>
+                  {selectedItems.map((elem: any) => {
+                    elem.selectedSales
+                      .map((el: any) => {
+                        return el.rate;
+                      })
+                      .reduce((a: any, b: any) => {
+                        console.log(a + b);
+                        return a + b;
+                      });
+                  })}
+                </p> */}
               </li>
               <button
                 onClick={() => {
@@ -178,7 +192,13 @@ function ShoppingBasketPage() {
         })}
       <div>
         <p>합계</p>
-        <p>0원</p>
+        <p>
+          {selectedItems &&
+            selectedItems.reduce((a: any, b: any) => {
+              return a + b.price * b.count;
+            }, 0)}
+          원
+        </p>
       </div>
     </>
   );
