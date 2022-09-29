@@ -31,11 +31,11 @@ export const MainMenuButton = styled(Link)<{ type: string }>`
   height: 60px;
   text-align: center;
   background-color: ${props =>
-    props.type === 'item'
+    props.type === 'sale'
       ? props.theme.backgroundPink
       : props.theme.backgroundGrey};
   color: ${props =>
-    props.type === 'item' ? props.theme.mainPink : props.theme.mainGrey};
+    props.type === 'sale' ? props.theme.mainPink : props.theme.mainGrey};
   padding: 10px;
   margin: 10px;
   border-radius: 10px;
@@ -91,6 +91,7 @@ export const SaleEditButton = styled.button`
 `;
 
 export const MainBottomDiv = styled.div`
+  max-width: 76.8rem;
   width: 100%;
   height: 100px;
   position: absolute;
@@ -107,6 +108,7 @@ export const MainBottomDiv = styled.div`
 
 export const TotalAmountTitle = styled.p`
   font-size: 1.5rem;
+  margin-right: 10px;
   color: ${props => props.theme.mainBlack};
 `;
 

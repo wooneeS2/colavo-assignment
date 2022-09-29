@@ -80,7 +80,7 @@ function ShoppingBasketPage() {
 
   return (
     <PageContainer>
-      <Modal isOpen={isOpen}>
+      <Modal isOpen={isOpen} ariaHideApp={false}>
         {selectedItems &&
           selectedItems.map((elem: itemType) => {
             if (elem.name === '') {
