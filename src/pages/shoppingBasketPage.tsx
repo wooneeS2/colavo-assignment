@@ -12,6 +12,13 @@ type saleType = {
   rate: number;
 };
 
+type itemType = {
+  name: string;
+  price: number;
+  count: number;
+  selectedSales: Array<Object>;
+};
+
 function ShoppingBasketPage() {
   const [selectedItems, setSelectedItems] = React.useState(
     JSON.parse(sessionStorage.getItem('selectedItems')!)
@@ -49,10 +56,12 @@ function ShoppingBasketPage() {
 
   React.useEffect(() => {
     selectedItems &&
-      selectedItems.forEach((elem: any) => Object.assign(elem, { count: 1 }));
+      selectedItems.forEach((elem: itemType) =>
+        Object.assign(elem, { count: 1 })
+      );
 
     selectedSales &&
-      selectedItems.forEach((elem: any) =>
+      selectedItems.forEach((elem: saleType) =>
         Object.assign(elem, { selectedSales })
       );
   }, []);
@@ -61,7 +70,7 @@ function ShoppingBasketPage() {
     <>
       <Modal isOpen={isOpen}>
         {selectedItems &&
-          selectedItems.map((elem: any) => {
+          selectedItems.map((elem: itemType) => {
             if (elem.name === '') {
               return;
             }
@@ -87,7 +96,7 @@ function ShoppingBasketPage() {
                         });
                       } else {
                         let tempItem = selectedItems.findIndex(
-                          (itemName: any) => itemName.name === target.id
+                          (itemName: itemType) => itemName.name === target.id
                         );
                         Object.assign(tempItem, {
                           selectedSales: elem.selectedSales.push({
@@ -130,7 +139,7 @@ function ShoppingBasketPage() {
       </div>
       <div>
         {selectedItems &&
-          selectedItems.map((elem: any) => {
+          selectedItems.map((elem: itemType) => {
             if (elem.name === '') {
               return;
             }
@@ -159,7 +168,7 @@ function ShoppingBasketPage() {
       </div>
       <hr></hr>
       {selectedSales &&
-        selectedSales.map((elem: any) => {
+        selectedSales.map((elem: saleType) => {
           if (elem.name === '') {
             return;
           }
@@ -196,7 +205,7 @@ function ShoppingBasketPage() {
         <p>
           {moneyConvertToKRW(
             selectedItems &&
-              selectedItems.reduce((a: any, b: any) => {
+              selectedItems.reduce((a: any, b: itemType) => {
                 return a + b.price * b.count;
               }, 0)
           )}
