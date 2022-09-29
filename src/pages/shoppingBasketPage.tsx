@@ -19,7 +19,7 @@ function ShoppingBasketPage() {
     JSON.parse(sessionStorage.getItem('selectedSales')!)
   );
   const [isOpen, setIsOpen] = React.useState(false);
-  const [currentSale, setCurrentSalse] = React.useState('');
+  const [currentSale, setCurrentSale] = React.useState({ name: '', rate: 0 });
 
   const { data, isLoading } = useQuery(['getItemsData'], () => getItemDatas());
   let items;
@@ -59,23 +59,53 @@ function ShoppingBasketPage() {
         {selectedItems &&
           selectedItems.map((elem: any) => {
             console.log(elem);
-
             if (elem.name === '') {
               return;
             }
             return (
               <div key={elem.name}>
-                <li>
-                  {elem.name}/{elem.price}
-                </li>
+                <ul>
+                  <li
+                    value={elem.name}
+                    id={elem.name}
+                    onClick={(e: React.MouseEvent) => {
+                      console.log(e);
+                      const target = e.target as HTMLLIElement;
+                      const temp = elem.selectedSales.findIndex(
+                        (el: any) => el.name === currentSale.name
+                      );
+                      if (temp !== -1) {
+                        Object.assign(elem, {
+                          selectedSales: elem.selectedSales.filter(
+                            (el: any, index: number) => {
+                              return index !== temp;
+                            }
+                          ),
+                        });
+                      } else {
+                        let tempItem = selectedItems.findIndex(
+                          (itemName: any) => itemName.name === target.id
+                        );
+                        Object.assign(tempItem, {
+                          selectedSales: elem.selectedSales.push({
+                            name: currentSale.name,
+                            rate: currentSale.rate,
+                          }),
+                        });
+                      }
+                    }}
+                  >
+                    {elem.name}/{elem.price}/{elem.count}개
+                  </li>
+                </ul>
                 <p>
-                  {elem.selectedSales.findIndex(
-                    (el: any) => el.name === currentSale
+                  {isOpen &&
+                  elem.selectedSales.findIndex(
+                    (el: any) => el.name === currentSale.name
                   ) !== -1
                     ? 'O'
                     : 'X'}
                 </p>
-                <p>{currentSale}</p>
               </div>
             );
           })}
@@ -138,7 +168,7 @@ function ShoppingBasketPage() {
               <button
                 onClick={() => {
                   setIsOpen(true);
-                  setCurrentSalse(elem.name);
+                  setCurrentSale({ name: elem.name, rate: elem.rate });
                 }}
               >
                 수정
