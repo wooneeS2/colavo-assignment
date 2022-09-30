@@ -23,6 +23,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlus, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { itemType, saleType } from 'types/types';
+import { moneyConvertToUSD } from 'utils/moneyConvertToUSD';
 
 const itemCounts = [...new Array(10)].map((_, i) => i + 1);
 
@@ -86,6 +87,8 @@ function ShoppingBasketPage() {
   const totalRate = selectedSales.reduce((a: any, b: saleType) => {
     return a + b.rate;
   }, 0);
+
+  const finalAmount = totalAmount - totalAmount * totalRate;
 
   return (
     <PageContainer>
@@ -243,7 +246,7 @@ function ShoppingBasketPage() {
             <ItemStyleDiv key={elem.name}>
               <ItemListStyle type="sale">
                 {elem.name}
-                <p>할인률 : {(elem.rate * 100).toFixed(2)}%</p>
+                <p> -{moneyConvertToKRW(totalAmount * totalRate)}₩</p>
               </ItemListStyle>
               <div>
                 <ShoppingBasketButton
@@ -282,8 +285,11 @@ function ShoppingBasketPage() {
           <p>합계</p>
           <TotalAmountTitle>
             {selectedItems &&
-              moneyConvertToKRW(totalAmount - totalAmount * totalRate)}
-            원
+              data?.data.currency_code === 'KRW' &&
+              `${moneyConvertToKRW(finalAmount)}원`}
+            {selectedItems &&
+              data?.data.currency_code === 'USD' &&
+              `${moneyConvertToUSD(finalAmount)}$`}
           </TotalAmountTitle>
         </div>
         <NextButton>다음</NextButton>
