@@ -1,9 +1,27 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getItemDatas } from 'api/itemApi';
-import { Link } from 'react-router-dom';
 import Modal from 'react-modal';
 import { moneyConvertToKRW } from 'utils/moneyConvertToKRW';
+import { PageContainer } from 'design/commonStyles';
+import {
+  HrStyle,
+  IconStyle,
+  ItemListSelectBox,
+  ItemListStyle,
+  ItemStyleDiv,
+  MainBottomDiv,
+  MainMenuButton,
+  MainMenuDiv,
+  MainTime,
+  MainUserDiv,
+  MainUserName,
+  NextButton,
+  SaleEditButton,
+  TotalAmountTitle,
+} from 'design/shoppingBasketStyles/shoppingBasketStyles';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCirclePlus, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 const itemCounts = [...new Array(10)].map((_, i) => i + 1);
 
@@ -17,6 +35,17 @@ type itemType = {
   price: number;
   count: number;
   selectedSales: Array<Object>;
+};
+
+const customModalStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+  },
 };
 
 function ShoppingBasketPage() {
@@ -62,60 +91,71 @@ function ShoppingBasketPage() {
   }, []);
 
   return (
-    <>
-      <Modal isOpen={isOpen}>
+    <PageContainer>
+      <Modal isOpen={isOpen} ariaHideApp={false} style={customModalStyles}>
+        <p style={{ fontSize: '1.5rem' }}>{currentSale.name}</p>
+        <HrStyle />
+        {!selectedItems && <p>시술을 선택해주세요.</p>}
         {selectedItems &&
           selectedItems.map((elem: itemType) => {
             if (elem.name === '') {
               return;
             }
             return (
-              <div key={elem.name}>
-                <ul>
-                  <li
-                    value={elem.name}
-                    id={elem.name}
-                    onClick={(e: React.MouseEvent) => {
-                      const target = e.target as HTMLLIElement;
-                      const temp = elem.selectedSales.findIndex(
-                        (el: any) => el.name === currentSale.name
+              <ItemStyleDiv key={elem.name}>
+                <ItemListStyle
+                  type="item"
+                  value={elem.name}
+                  id={elem.name}
+                  onClick={(e: React.MouseEvent) => {
+                    const target = e.target as HTMLLIElement;
+                    const temp = elem.selectedSales.findIndex(
+                      (el: any) => el.name === currentSale.name
+                    );
+                    if (temp !== -1) {
+                      Object.assign(elem, {
+                        selectedSales: elem.selectedSales.filter(
+                          (el: any, index: number) => {
+                            return index !== temp;
+                          }
+                        ),
+                      });
+                    } else {
+                      let tempItem = selectedItems.findIndex(
+                        (itemName: itemType) => itemName.name === target.id
                       );
-                      if (temp !== -1) {
-                        Object.assign(elem, {
-                          selectedSales: elem.selectedSales.filter(
-                            (el: any, index: number) => {
-                              return index !== temp;
-                            }
-                          ),
-                        });
-                      } else {
-                        let tempItem = selectedItems.findIndex(
-                          (itemName: itemType) => itemName.name === target.id
-                        );
-                        Object.assign(tempItem, {
-                          selectedSales: elem.selectedSales.push({
-                            name: currentSale.name,
-                            rate: currentSale.rate,
-                          }),
-                        });
-                      }
-                    }}
-                  >
-                    {elem.name}/{elem.price}/{elem.count}개
-                  </li>
-                </ul>
-                <p>
+                      Object.assign(tempItem, {
+                        selectedSales: elem.selectedSales.push({
+                          name: currentSale.name,
+                          rate: currentSale.rate,
+                        }),
+                      });
+                    }
+                  }}
+                >
+                  {elem.name}x{elem.count}
+                  <p>{moneyConvertToKRW(elem.price)}원</p>
+                </ItemListStyle>
+                <span>
                   {isOpen &&
                   elem.selectedSales.findIndex(
                     (el: any) => el.name === currentSale.name
-                  ) !== -1
-                    ? 'O'
-                    : 'X'}
-                </p>
-              </div>
+                  ) !== -1 ? (
+                    <IconStyle icon={faCheck} />
+                  ) : (
+                    ''
+                  )}
+                </span>
+              </ItemStyleDiv>
             );
           })}
         <button
+          style={{
+            fontSize: '1rem',
+            border: 'none',
+            width: '100px',
+            height: '50px',
+          }}
           onClick={() => {
             setIsOpen(false);
           }}
@@ -123,14 +163,30 @@ function ShoppingBasketPage() {
           확인
         </button>
       </Modal>
-      <div>
-        <Link to={'select-items'} state={{ item: items }}>
-          시술
-        </Link>
-        <Link to={'select-sales'} state={{ sale: discounts }}>
-          할인
-        </Link>
-      </div>
+
+      <MainUserDiv>
+        <MainUserName>김원희</MainUserName>
+        <MainTime>{new Date().toLocaleString('ko-kr').slice(0, 20)}</MainTime>
+      </MainUserDiv>
+      <MainMenuDiv>
+        <MainMenuButton
+          to={'select-items'}
+          state={{ item: items }}
+          type={'item'}
+        >
+          <FontAwesomeIcon icon={faCirclePlus} />
+          <span>시술</span>
+        </MainMenuButton>
+        <MainMenuButton
+          to={'select-sales'}
+          state={{ sale: discounts }}
+          type={'sale'}
+        >
+          <FontAwesomeIcon icon={faCirclePlus} />
+          <span>할인</span>
+        </MainMenuButton>
+      </MainMenuDiv>
+      <HrStyle />
       <div>
         {selectedItems &&
           selectedItems.map((elem: itemType) => {
@@ -138,25 +194,28 @@ function ShoppingBasketPage() {
               return;
             }
             return (
-              <div key={elem.name}>
-                <li>
-                  {elem.name}/{elem.price}
-                </li>
-                <select
-                  name="itemCount"
-                  id="itemCont"
-                  defaultValue={elem.count}
-                  onChange={e => {
-                    changeItemCount(e, elem.name);
-                  }}
-                >
-                  {itemCounts.map(item => (
-                    <option key={item} value={item}>
-                      {item}
-                    </option>
-                  ))}
-                </select>
-              </div>
+              <ItemStyleDiv key={elem.name}>
+                <ItemListStyle type="item">
+                  {elem.name}
+                  <p>{moneyConvertToKRW(elem.price)}원</p>
+                </ItemListStyle>
+                <div>
+                  <ItemListSelectBox
+                    name="itemCount"
+                    id="itemCont"
+                    defaultValue={elem.count}
+                    onChange={e => {
+                      changeItemCount(e, elem.name);
+                    }}
+                  >
+                    {itemCounts.map(item => (
+                      <option key={item} value={item}>
+                        {item}
+                      </option>
+                    ))}
+                  </ItemListSelectBox>
+                </div>
+              </ItemStyleDiv>
             );
           })}
       </div>
@@ -167,9 +226,10 @@ function ShoppingBasketPage() {
             return;
           }
           return (
-            <div key={elem.name}>
-              <li>
-                {elem.name}/{elem.rate}
+            <ItemStyleDiv key={elem.name}>
+              <ItemListStyle type="sale">
+                {elem.name}
+                <p>할인률 : {elem.rate * 100}%</p>
                 {/* <p>
                   {selectedItems.map((elem: any) => {
                     elem.selectedSales
@@ -182,31 +242,36 @@ function ShoppingBasketPage() {
                       });
                   })}
                 </p> */}
-              </li>
-              <button
+              </ItemListStyle>
+              <SaleEditButton
                 onClick={() => {
                   setIsOpen(true);
                   setCurrentSale({ name: elem.name, rate: elem.rate });
                 }}
               >
                 수정
-              </button>
-            </div>
+              </SaleEditButton>
+            </ItemStyleDiv>
           );
         })}
-      <div>
-        <p>합계</p>
-        <p>
-          {selectedItems &&
-            moneyConvertToKRW(
-              selectedItems.reduce((a: any, b: itemType) => {
-                return a + b.price * b.count;
-              }, 0)
-            )}
-          원
-        </p>
-      </div>
-    </>
+      <HrStyle />
+
+      <MainBottomDiv>
+        <div>
+          <p>합계</p>
+          <TotalAmountTitle>
+            {selectedItems &&
+              moneyConvertToKRW(
+                selectedItems.reduce((a: any, b: itemType) => {
+                  return a + b.price * b.count;
+                }, 0)
+              )}
+            원
+          </TotalAmountTitle>
+        </div>
+        <NextButton>다음</NextButton>
+      </MainBottomDiv>
+    </PageContainer>
   );
 }
 
