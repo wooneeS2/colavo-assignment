@@ -22,20 +22,9 @@ import {
 } from 'design/shoppingBasketStyles/shoppingBasketStyles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlus, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { itemType, saleType } from 'types/types';
 
 const itemCounts = [...new Array(10)].map((_, i) => i + 1);
-
-type saleType = {
-  name: string;
-  rate: number;
-};
-
-type itemType = {
-  name: string;
-  price: number;
-  count: number;
-  selectedSales: Array<Object>;
-};
 
 const customModalStyles = {
   content: {
@@ -226,7 +215,7 @@ function ShoppingBasketPage() {
                     onClick={(e: React.MouseEvent) => {
                       e.preventDefault();
                       const newItem = selectedItems.filter(
-                        (el: any) => el.name !== elem.name
+                        (el: itemType) => el.name !== elem.name
                       );
                       setSelectedItems(() => {
                         sessionStorage.setItem(
@@ -255,18 +244,6 @@ function ShoppingBasketPage() {
               <ItemListStyle type="sale">
                 {elem.name}
                 <p>할인률 : {(elem.rate * 100).toFixed(2)}%</p>
-                {/* <p>
-                  {selectedItems.map((elem: any) => {
-                    elem.selectedSales
-                      .map((el: any) => {
-                        return el.rate;
-                      })
-                      .reduce((a: any, b: any) => {
-                        console.log(a + b);
-                        return a + b;
-                      });
-                  })}
-                </p> */}
               </ItemListStyle>
               <div>
                 <ShoppingBasketButton
@@ -281,7 +258,7 @@ function ShoppingBasketPage() {
                   onClick={(e: React.MouseEvent) => {
                     e.preventDefault();
                     const newSales = selectedSales.filter(
-                      (el: any) => el.name !== elem.name
+                      (el: saleType) => el.name !== elem.name
                     );
                     setSelectedSales(() => {
                       sessionStorage.setItem(

@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
+import { saleType } from '../types/types';
 import {
   HrStyle,
   ItemListStyle,
@@ -20,7 +21,7 @@ import {
 function SelectSalesPage() {
   const location = useLocation();
   const navigate = useNavigate();
-  const sales: Array<any> = location.state?.sale;
+  const sales: Array<saleType> = location.state?.sale;
   const [selectedSales, setSelectedSales] = React.useState([
     { name: '', rate: 0 },
   ]);
@@ -71,7 +72,7 @@ function SelectSalesPage() {
                   {elem.name}
                   <span>
                     {selectedSales.findIndex(
-                      (el: any) => el.name === elem.name
+                      (el: saleType) => el.name === elem.name
                     ) === -1 ? (
                       ''
                     ) : (

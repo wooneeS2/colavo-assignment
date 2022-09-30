@@ -16,11 +16,12 @@ import {
   SelectedItemBottomDiv,
 } from 'design/selectItemStyles/selectItemStyles';
 import { useNavigate } from 'react-router-dom';
+import { itemType } from '../types/types';
 
 function SelectItemPage() {
   const location = useLocation();
   const navigate = useNavigate();
-  const item: Array<any> = location.state?.item;
+  const item: Array<itemType> = location.state?.item;
   const [selectedItem, setSelectedItem] = React.useState([
     { name: '', price: 0, count: 0 },
   ]);
@@ -57,7 +58,7 @@ function SelectItemPage() {
           <MainTitle>시술 메뉴</MainTitle>
         </MainTitleDiv>
         <div>
-          {item?.map((elem: any) => {
+          {item?.map((elem: itemType) => {
             return (
               <>
                 <ItemListStyle
