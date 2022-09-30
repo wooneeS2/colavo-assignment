@@ -61,6 +61,7 @@ function SelectItemPage() {
             return (
               <>
                 <ItemListStyle
+                  type="item"
                   key={elem.name}
                   onClick={(e: React.MouseEvent) => {
                     e.preventDefault();

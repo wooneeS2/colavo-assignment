@@ -6,6 +6,7 @@ import { moneyConvertToKRW } from 'utils/moneyConvertToKRW';
 import { PageContainer } from 'design/commonStyles';
 import {
   HrStyle,
+  IconStyle,
   ItemListSelectBox,
   ItemListStyle,
   ItemStyleDiv,
@@ -20,7 +21,7 @@ import {
   TotalAmountTitle,
 } from 'design/shoppingBasketStyles/shoppingBasketStyles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
+import { faCirclePlus, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 const itemCounts = [...new Array(10)].map((_, i) => i + 1);
 
@@ -34,6 +35,17 @@ type itemType = {
   price: number;
   count: number;
   selectedSales: Array<Object>;
+};
+
+const customModalStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+  },
 };
 
 function ShoppingBasketPage() {
@@ -80,59 +92,70 @@ function ShoppingBasketPage() {
 
   return (
     <PageContainer>
-      <Modal isOpen={isOpen} ariaHideApp={false}>
+      <Modal isOpen={isOpen} ariaHideApp={false} style={customModalStyles}>
+        <p style={{ fontSize: '1.5rem' }}>{currentSale.name}</p>
+        <HrStyle />
+        {!selectedItems && <p>시술을 선택해주세요.</p>}
         {selectedItems &&
           selectedItems.map((elem: itemType) => {
             if (elem.name === '') {
               return;
             }
             return (
-              <div key={elem.name}>
-                <ul>
-                  <li
-                    value={elem.name}
-                    id={elem.name}
-                    onClick={(e: React.MouseEvent) => {
-                      const target = e.target as HTMLLIElement;
-                      const temp = elem.selectedSales.findIndex(
-                        (el: any) => el.name === currentSale.name
+              <ItemStyleDiv key={elem.name}>
+                <ItemListStyle
+                  type="item"
+                  value={elem.name}
+                  id={elem.name}
+                  onClick={(e: React.MouseEvent) => {
+                    const target = e.target as HTMLLIElement;
+                    const temp = elem.selectedSales.findIndex(
+                      (el: any) => el.name === currentSale.name
+                    );
+                    if (temp !== -1) {
+                      Object.assign(elem, {
+                        selectedSales: elem.selectedSales.filter(
+                          (el: any, index: number) => {
+                            return index !== temp;
+                          }
+                        ),
+                      });
+                    } else {
+                      let tempItem = selectedItems.findIndex(
+                        (itemName: itemType) => itemName.name === target.id
                       );
-                      if (temp !== -1) {
-                        Object.assign(elem, {
-                          selectedSales: elem.selectedSales.filter(
-                            (el: any, index: number) => {
-                              return index !== temp;
-                            }
-                          ),
-                        });
-                      } else {
-                        let tempItem = selectedItems.findIndex(
-                          (itemName: itemType) => itemName.name === target.id
-                        );
-                        Object.assign(tempItem, {
-                          selectedSales: elem.selectedSales.push({
-                            name: currentSale.name,
-                            rate: currentSale.rate,
-                          }),
-                        });
-                      }
-                    }}
-                  >
-                    {elem.name}/{elem.price}/{elem.count}개
-                  </li>
-                </ul>
-                <p>
+                      Object.assign(tempItem, {
+                        selectedSales: elem.selectedSales.push({
+                          name: currentSale.name,
+                          rate: currentSale.rate,
+                        }),
+                      });
+                    }
+                  }}
+                >
+                  {elem.name}x{elem.count}
+                  <p>{moneyConvertToKRW(elem.price)}원</p>
+                </ItemListStyle>
+                <span>
                   {isOpen &&
                   elem.selectedSales.findIndex(
                     (el: any) => el.name === currentSale.name
-                  ) !== -1
-                    ? 'O'
-                    : 'X'}
-                </p>
-              </div>
+                  ) !== -1 ? (
+                    <IconStyle icon={faCheck} />
+                  ) : (
+                    ''
+                  )}
+                </span>
+              </ItemStyleDiv>
             );
           })}
         <button
+          style={{
+            fontSize: '1rem',
+            border: 'none',
+            width: '100px',
+            height: '50px',
+          }}
           onClick={() => {
             setIsOpen(false);
           }}
@@ -172,7 +195,7 @@ function ShoppingBasketPage() {
             }
             return (
               <ItemStyleDiv key={elem.name}>
-                <ItemListStyle>
+                <ItemListStyle type="item">
                   {elem.name}
                   <p>{moneyConvertToKRW(elem.price)}원</p>
                 </ItemListStyle>
@@ -204,7 +227,7 @@ function ShoppingBasketPage() {
           }
           return (
             <ItemStyleDiv key={elem.name}>
-              <ItemListStyle>
+              <ItemListStyle type="sale">
                 {elem.name}
                 <p>할인률 : {elem.rate * 100}%</p>
                 {/* <p>

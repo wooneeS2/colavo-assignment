@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export const MainUserDiv = styled.div`
   display: flex;
@@ -59,14 +60,16 @@ export const ItemStyleDiv = styled.div`
   margin: 10px;
 `;
 
-export const ItemListStyle = styled.li`
+export const ItemListStyle = styled.li<{ type: string }>`
   list-style: none;
   margin: 6px;
   font-size: 1.2rem;
   color: ${props => props.theme.mainBlack};
+  cursor: pointer;
   p {
     font-size: 1rem;
-    color: ${props => props.theme.mainGrey};
+    color: ${props =>
+      props.type === 'item' ? props.theme.mainGrey : props.theme.mainPink};
   }
   div {
     display: flex;
@@ -129,4 +132,9 @@ export const NextButton = styled.button`
   border-radius: 4px;
   text-align: center;
   font-weight: 400;
+`;
+
+export const IconStyle = styled(FontAwesomeIcon)`
+  color: ${props => props.theme.mainPurple};
+  font-size: 1rem;
 `;

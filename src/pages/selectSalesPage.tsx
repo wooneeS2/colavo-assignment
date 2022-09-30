@@ -60,6 +60,7 @@ function SelectSalesPage() {
           return (
             <>
               <ItemListStyle
+                type="sale"
                 key={elem.name}
                 onClick={(e: React.MouseEvent) => {
                   e.preventDefault();

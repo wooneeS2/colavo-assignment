@@ -21,7 +21,6 @@ export const SelectedItemBottomDiv = styled.div<{ type: string }>`
   font-size: 1rem;
   position: ${props => (props.type === 'item' ? 'relative' : 'fixed')};
   bottom: 1px;
-
   max-width: 76.8rem;
   width: 100%;
   height: 100px;
