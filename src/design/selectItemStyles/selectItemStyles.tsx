@@ -19,8 +19,7 @@ export const SelectedItemBottomDiv = styled.div`
   color: ${props => props.theme.mainWhite};
   background-color: ${props => props.theme.mainPurple};
   font-size: 1rem;
-  position: absolute;
-  bottom: 1px;
+
   max-width: 76.8rem;
   width: 100%;
   height: 100px;

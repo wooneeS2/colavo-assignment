@@ -68,6 +68,14 @@ export const ItemListStyle = styled.li`
     font-size: 1rem;
     color: ${props => props.theme.mainGrey};
   }
+  div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  span {
+    color: ${props => props.theme.mainPurple};
+  }
 `;
 
 export const ItemListSelectBox = styled.select`
@@ -94,8 +102,7 @@ export const MainBottomDiv = styled.div`
   max-width: 76.8rem;
   width: 100%;
   height: 100px;
-  position: absolute;
-  bottom: 1px;
+
   div {
     display: flex;
     flex-direction: row;
