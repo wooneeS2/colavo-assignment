@@ -79,7 +79,7 @@ function SelectSalesPage() {
                     )}
                   </span>
                 </div>
-                <SaleRateTitle>{elem.rate}%</SaleRateTitle>
+                <SaleRateTitle>{(elem.rate * 100).toFixed(0)}%</SaleRateTitle>
               </ItemListStyle>
               <HrStyle />
             </>

@@ -90,6 +90,14 @@ function ShoppingBasketPage() {
       );
   }, []);
 
+  const totalAmount = selectedItems.reduce((a: any, b: itemType) => {
+    return a + b.price * b.count;
+  }, 0);
+
+  const totalRate = selectedSales.reduce((a: any, b: saleType) => {
+    return a + b.rate;
+  }, 0);
+
   return (
     <PageContainer>
       <Modal isOpen={isOpen} ariaHideApp={false} style={customModalStyles}>
@@ -246,7 +254,7 @@ function ShoppingBasketPage() {
             <ItemStyleDiv key={elem.name}>
               <ItemListStyle type="sale">
                 {elem.name}
-                <p>할인률 : {elem.rate * 100}%</p>
+                <p>할인률 : {(elem.rate * 100).toFixed(2)}%</p>
                 {/* <p>
                   {selectedItems.map((elem: any) => {
                     elem.selectedSales
@@ -297,11 +305,7 @@ function ShoppingBasketPage() {
           <p>합계</p>
           <TotalAmountTitle>
             {selectedItems &&
-              moneyConvertToKRW(
-                selectedItems.reduce((a: any, b: itemType) => {
-                  return a + b.price * b.count;
-                }, 0)
-              )}
+              moneyConvertToKRW(totalAmount - totalAmount * totalRate)}
             원
           </TotalAmountTitle>
         </div>
