@@ -9,9 +9,10 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import {
+  HrStyle,
   ItemListStyle,
   NextButton,
 } from 'design/shoppingBasketStyles/shoppingBasketStyles';
@@ -57,34 +58,46 @@ function SelectSalesPage() {
       <div>
         {sales?.map((elem: any) => {
           return (
-            <ItemListStyle
-              key={elem.name}
-              onClick={(e: React.MouseEvent) => {
-                e.preventDefault();
-                onClickItems([elem.name, elem.rate]);
-              }}
-            >
-              {elem.name}
-              <SaleRateTitle>{elem.rate}%</SaleRateTitle>
-            </ItemListStyle>
+            <>
+              <ItemListStyle
+                key={elem.name}
+                onClick={(e: React.MouseEvent) => {
+                  e.preventDefault();
+                  onClickItems([elem.name, elem.rate]);
+                }}
+              >
+                <div>
+                  {elem.name}
+                  <span>
+                    {selectedSales.findIndex(
+                      (el: any) => el.name === elem.name
+                    ) === -1 ? (
+                      ''
+                    ) : (
+                      <FontAwesomeIcon icon={faCheck} />
+                    )}
+                  </span>
+                </div>
+                <SaleRateTitle>{elem.rate}%</SaleRateTitle>
+              </ItemListStyle>
+              <HrStyle />
+            </>
           );
         })}
       </div>
-      <SelectedItemBottomDiv>
+      <SelectedItemBottomDiv type="sale">
         <p>할인을 선택하세요.(여러개 가능)</p>
-        <NextButton>
-          <Link
-            to={'/'}
-            onClick={() => {
-              sessionStorage.setItem(
-                'selectedSales',
-                JSON.stringify(selectedSales)
-              );
-            }}
-          >
-            완료
-          </Link>
-        </NextButton>
+        <Link
+          to={'/'}
+          onClick={() => {
+            sessionStorage.setItem(
+              'selectedSales',
+              JSON.stringify(selectedSales)
+            );
+          }}
+        >
+          <NextButton>완료</NextButton>
+        </Link>
       </SelectedItemBottomDiv>
     </PageContainer>
   );

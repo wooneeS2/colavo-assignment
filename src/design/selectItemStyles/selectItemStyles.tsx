@@ -15,10 +15,12 @@ export const MainTitle = styled.p`
   color: ${props => props.theme.mainBlack};
 `;
 
-export const SelectedItemBottomDiv = styled.div`
+export const SelectedItemBottomDiv = styled.div<{ type: string }>`
   color: ${props => props.theme.mainWhite};
   background-color: ${props => props.theme.mainPurple};
   font-size: 1rem;
+  position: ${props => (props.type === 'item' ? 'relative' : 'fixed')};
+  bottom: 1px;
 
   max-width: 76.8rem;
   width: 100%;

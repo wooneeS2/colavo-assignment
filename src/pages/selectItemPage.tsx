@@ -86,21 +86,19 @@ function SelectItemPage() {
             );
           })}
         </div>
-        <SelectedItemBottomDiv>
+        <SelectedItemBottomDiv type="item">
           <p>시술을 선택하세요.(여러개 가능)</p>
-          <NextButton>
-            <Link
-              to={'/'}
-              onClick={() => {
-                sessionStorage.setItem(
-                  'selectedItems',
-                  JSON.stringify(selectedItem)
-                );
-              }}
-            >
-              완료
-            </Link>
-          </NextButton>
+          <Link
+            to={'/'}
+            onClick={() => {
+              sessionStorage.setItem(
+                'selectedItems',
+                JSON.stringify(selectedItem)
+              );
+            }}
+          >
+            <NextButton>완료</NextButton>
+          </Link>
         </SelectedItemBottomDiv>
       </PageContainer>
     </div>
