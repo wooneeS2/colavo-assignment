@@ -91,7 +91,7 @@ export const ItemListSelectBox = styled.select`
   margin: 6px;
 `;
 
-export const SaleEditButton = styled.button`
+export const ShoppingBasketButton = styled.button`
   width: 50px;
   height: 30px;
   border-radius: 10px;
@@ -99,6 +99,7 @@ export const SaleEditButton = styled.button`
   border: none;
   padding: 4px;
   margin: 6px;
+  cursor: pointer;
 `;
 
 export const MainBottomDiv = styled.div`

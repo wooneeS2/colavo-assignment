@@ -17,7 +17,7 @@ import {
   MainUserDiv,
   MainUserName,
   NextButton,
-  SaleEditButton,
+  ShoppingBasketButton,
   TotalAmountTitle,
 } from 'design/shoppingBasketStyles/shoppingBasketStyles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -52,7 +52,7 @@ function ShoppingBasketPage() {
   const [selectedItems, setSelectedItems] = React.useState(
     JSON.parse(sessionStorage.getItem('selectedItems')!)
   );
-  const [selectedSales] = React.useState(
+  const [selectedSales, setSelectedSales] = React.useState(
     JSON.parse(sessionStorage.getItem('selectedSales')!)
   );
   const [isOpen, setIsOpen] = React.useState(false);
@@ -214,6 +214,23 @@ function ShoppingBasketPage() {
                       </option>
                     ))}
                   </ItemListSelectBox>
+                  <ShoppingBasketButton
+                    onClick={(e: React.MouseEvent) => {
+                      e.preventDefault();
+                      const newItem = selectedItems.filter(
+                        (el: any) => el.name !== elem.name
+                      );
+                      setSelectedItems(() => {
+                        sessionStorage.setItem(
+                          'selectedItems',
+                          JSON.stringify(newItem)
+                        );
+                        return newItem;
+                      });
+                    }}
+                  >
+                    삭제
+                  </ShoppingBasketButton>
                 </div>
               </ItemStyleDiv>
             );
@@ -243,14 +260,33 @@ function ShoppingBasketPage() {
                   })}
                 </p> */}
               </ItemListStyle>
-              <SaleEditButton
-                onClick={() => {
-                  setIsOpen(true);
-                  setCurrentSale({ name: elem.name, rate: elem.rate });
-                }}
-              >
-                수정
-              </SaleEditButton>
+              <div>
+                <ShoppingBasketButton
+                  onClick={() => {
+                    setIsOpen(true);
+                    setCurrentSale({ name: elem.name, rate: elem.rate });
+                  }}
+                >
+                  수정
+                </ShoppingBasketButton>
+                <ShoppingBasketButton
+                  onClick={(e: React.MouseEvent) => {
+                    e.preventDefault();
+                    const newSales = selectedSales.filter(
+                      (el: any) => el.name !== elem.name
+                    );
+                    setSelectedSales(() => {
+                      sessionStorage.setItem(
+                        'selectedSales',
+                        JSON.stringify(newSales)
+                      );
+                      return newSales;
+                    });
+                  }}
+                >
+                  삭제
+                </ShoppingBasketButton>
+              </div>
             </ItemStyleDiv>
           );
         })}
