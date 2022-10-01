@@ -115,6 +115,8 @@ selectedItems.reduce((a: any, b: itemType) => {
 ```
 
 2. `Argument of type 'RecoilState<{ name: string; price: number; selectedSales: {}; }[]>' is not assignable to parameter of type 'RecoilState<itemType>'`에러
+
+
 에러 상황 : 리코일을 사용하여 selectedItem을 관리하려할 때 타입이 맞지 않는 에러 발생
 ```js
 //atom
