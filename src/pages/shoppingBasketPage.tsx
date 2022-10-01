@@ -256,7 +256,18 @@ function ShoppingBasketPage() {
             <ItemStyleDiv key={elem.name}>
               <ItemListStyle type="sale">
                 {elem.name}
-                <p> -{moneyConvertToKRW(totalAmount * totalRate)}₩</p>
+                <p> -{moneyConvertToKRW(totalAmount * elem.rate)}₩</p>
+                {/* <p>
+                  {selectedItems.map((item: itemType) => {
+                    if (
+                      item.selectedSales.findIndex(
+                        (sale: saleType) => sale.name === elem.name
+                      )
+                    ) {
+                      return item.name;
+                    }
+                  })}
+                </p> */}
               </ItemListStyle>
               <div>
                 <ShoppingBasketButton

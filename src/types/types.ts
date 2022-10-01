@@ -7,5 +7,5 @@ export type itemType = {
   name: string;
   price: number;
   count: number;
-  selectedSales: Array<Object>;
+  selectedSales: Array<saleType>;
 };
