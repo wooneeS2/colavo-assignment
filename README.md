@@ -73,7 +73,7 @@
 - [ ] 상품 개별 할인 적용하기
 - [ ] 리코일 적용하기
 - [ ] 리팩토링 하기
-- [ ] 리드미 쓰기
+- [x] 리드미 쓰기
 
 
 
@@ -82,6 +82,7 @@
 ![image](https://user-images.githubusercontent.com/49189226/193410088-4cc72af0-aa0d-4590-9572-0afe1efb0d7e.png)
 - `selectedItem`을 reduce 이용하여 계산할 때 계산이 중복되는 현상 발생
 원인 : reduce 안에 reduce를 써서 중복해서 생긴 문제였음.
+
 문제 코드
 ```js
 {
@@ -143,5 +144,5 @@ const [selectedItems, setSelectedItems] =
 ## 앞으로 해결할 부분
 
 1. 타입스크립트에서 리코일을 사용하는 방법에 대해 공부해서, 전역으로 selectedItem을 관리해서 현재 구현하지 못한 선택 상품 실시간 변경 및 할인율 선택 적용 기능을 추가하고 싶다.
-
-2. 타입스크립트 기본기를 더 쌓아야겠다고 생각했다.
+2. selectedItems와 selectedSales를 전역으로 관리해서 shoppingBasketPage의 컴포넌트를 나눠 모듈화를 시키고싶다.
+3. 타입스크립트 기본기를 더 쌓아야겠다고 생각했다.
