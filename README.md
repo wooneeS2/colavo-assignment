@@ -1,46 +1,86 @@
-# Getting Started with Create React App
+# 콜라보 그라운드 과제
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 요구사항
+- [X]  아이템과 할인을 장바구니에 담을 수 있음
+- [X] 동일한 아이템은 장바구니에 담기 불가
+- [X] 아이템은 수량 선택이가능함
+- [X] 할인 대상을 선택하지 않을 경우 장바구니에 담긴 모든 아이템에 대해 할인 적용
+- [ ] 할인 대상을 선택했을 경우 선택 아이템에만 할인 적용
+- [X] 장바구니에 담긴 내용이 변경 될 때마다 사용자에게 최종 금액 표시
+- [X] 상품 및 할인 하나씩 삭제가 가능함
+- [X] 최종 금액은 currency_code에 따라 달러 or 원화로 표시
 
-## Available Scripts
+## 프로젝트 구성 안내
+- `api` :  api 통신을 위한 파일 모음
+- `design` : 스타일드 컴포넌트를 이용한 스타일 파일 모음
+- `pages` : 라우트로 표시되는 페이지 컴포넌트 모음
+- ` types`: 타입 파일 모음
+- `utils` : 함수 파일 모음
 
-In the project directory, you can run:
+## 프로젝트 실행
+- [여기를 눌러서 실행하기](https://celadon-kheer-3acfd2.netlify.app/)   
+- Github으로 실행하기
+```
+1. git clone https://github.com/wooneeS2/colavo-assignment.git
+2. npm install
+3. npm start
+```
 
-### `npm start`
+## 프로젝트 기술 스택
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+| 기술 | 선택 이유 | 
+| --- | --- | 
+| react-query| 1. API를 통해 불러오는 데이터를 효율적으로 사용하기 위해 사용함. | 
+| react-router-dom | 1. 장바구니 페이지와 상품 및 할인 선택 페이지를 나누기 위해 사용함. 2. 최신 버전 사용으로 전 버전에 비해 번들 사이즈가 70% 감소함. | 
+| styled-components | 1. 비슷한 디자인이 많아서 재사용이 가능한 스타일드 컴포넌트 사용 2. 프롭스를 통해 같은 컴포넌트여도 다른 디자인을 적용할 수 있기 때문에 사용함. | 
 
-### `npm test`
+## 개발 일정
+### 1일차
+- [x]  리액트 앱 세팅
+    - [x]  폴더구조
+    - [x]  프리티어 및 린트 설정
+- [x]  장바구니 페이지 만들기
+- [x]  아이템 api 연결
+- [x]  할인 api 연결
+- [x]  아이템 선택 페이지 만들기
+- [x]  할인 선택 페이지 만들기
+- [x]  상품 선택 가능하게 하기
+- [x]  아이템 중복선택 막기
+- [x]  아이템 여러개 선택해서 담기
+- [x]  아이템 및 할인데이터 구조 짜기
+- [x]  아이템 수량 바꾸기
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 2일차
+- [x]  가격 적용하기
+- [x]  개수에 따른 가격 적용하기
+- [x]  디자인
+- [x]  할인률 상품 선택 추가 삭제 기능
+- [x]  전체 할인 적용하기
+- [x]  할인 항목에서 상품 선택하기
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### 3일차
+- [x]  상품 선택페이지에서 선택시 O 표시 해주기
+- [x]  아이템 삭제
+- [x]  할인 삭제
+- [x]  할인률 두자리수만 나오게 하기
+- [x]  전체 할인가격 적용하기
+- [x]  달러 적용하기
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 4일차
+- [ ] 상품 개별 할인 적용하기
+- [ ] 리코일 적용하기
+- [ ] 리팩토링 하기
+- [ ] 리드미 쓰기
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 어려웠던 점
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## 아쉬웠던 점
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 앞으로 해결할 부분
