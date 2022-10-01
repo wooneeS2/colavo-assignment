@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getItemDatas } from 'api/itemApi';
 import Modal from 'react-modal';
@@ -39,21 +39,26 @@ const customModalStyles = {
 };
 
 function ShoppingBasketPage() {
-  const [selectedItems, setSelectedItems] = React.useState(
+  let items;
+  let discounts;
+  let totalAmount = 0;
+  let totalRate = 0;
+  let finalAmount = 0;
+
+  const [selectedItems, setSelectedItems] = useState(
     JSON.parse(sessionStorage.getItem('selectedItems')!)
   );
-  const [selectedSales, setSelectedSales] = React.useState(
+  const [selectedSales, setSelectedSales] = useState(
     JSON.parse(sessionStorage.getItem('selectedSales')!)
   );
-  const [isOpen, setIsOpen] = React.useState(false);
-  const [currentSale, setCurrentSale] = React.useState<saleType>({
+  const [isOpen, setIsOpen] = useState(false);
+  const [currentSale, setCurrentSale] = useState<saleType>({
     name: '',
     rate: 0,
   });
 
   const { data, isLoading } = useQuery(['getItemsData'], () => getItemDatas());
-  let items;
-  let discounts;
+
   if (!isLoading) {
     items = Object.values(data?.data.items);
     discounts = Object.values(data?.data.discounts);
@@ -73,22 +78,27 @@ function ShoppingBasketPage() {
     });
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     selectedSales &&
       selectedItems.forEach((elem: saleType) =>
         Object.assign(elem, { selectedSales })
       );
   }, []);
 
-  const totalAmount = selectedItems.reduce((a: any, b: itemType) => {
-    return a + b.price * b.count;
-  }, 0);
+  if (selectedItems) {
+    totalAmount = selectedItems.reduce((a: any, b: itemType) => {
+      return a + b.price * b.count;
+    }, 0);
+  }
 
-  const totalRate = selectedSales.reduce((a: any, b: saleType) => {
-    return a + b.rate;
-  }, 0);
-
-  const finalAmount = totalAmount - totalAmount * totalRate;
+  if (selectedSales) {
+    totalRate = selectedSales.reduce((a: any, b: saleType) => {
+      return a + b.rate;
+    }, 0);
+  }
+  if (selectedItems && selectedSales) {
+    finalAmount = totalAmount - totalAmount * totalRate;
+  }
 
   return (
     <PageContainer>
