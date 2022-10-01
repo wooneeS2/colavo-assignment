@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import { PageContainer } from 'design/commonStyles';
 import {
   MainTitle,
@@ -5,7 +6,6 @@ import {
   SaleRateTitle,
   SelectedItemBottomDiv,
 } from 'design/selectItemStyles/selectItemStyles';
-import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -22,9 +22,7 @@ function SelectSalesPage() {
   const location = useLocation();
   const navigate = useNavigate();
   const sales: Array<saleType> = location.state?.sale;
-  const [selectedSales, setSelectedSales] = React.useState([
-    { name: '', rate: 0 },
-  ]);
+  const [selectedSales, setSelectedSales] = useState([{ name: '', rate: 0 }]);
 
   const onClickItems = ([name, rate]: any) => {
     setSelectedSales(current => {
@@ -41,7 +39,7 @@ function SelectSalesPage() {
     });
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     console.log(selectedSales);
   }, [selectedSales]);
 

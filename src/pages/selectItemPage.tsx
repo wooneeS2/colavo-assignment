@@ -1,10 +1,10 @@
+import React, { useState, useEffect } from 'react';
 import { PageContainer } from 'design/commonStyles';
 import {
   HrStyle,
   ItemListStyle,
   NextButton,
 } from 'design/shoppingBasketStyles/shoppingBasketStyles';
-import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { moneyConvertToKRW } from 'utils/moneyConvertToKRW';
@@ -22,7 +22,7 @@ function SelectItemPage() {
   const location = useLocation();
   const navigate = useNavigate();
   const item: Array<itemType> = location.state?.item;
-  const [selectedItem, setSelectedItem] = React.useState([
+  const [selectedItem, setSelectedItem] = useState([
     { name: '', price: 0, count: 0 },
   ]);
 
@@ -41,7 +41,7 @@ function SelectItemPage() {
     });
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     console.log(selectedItem);
   }, [selectedItem]);
 
