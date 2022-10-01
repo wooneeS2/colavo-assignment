@@ -55,7 +55,7 @@ function SelectSalesPage() {
         <MainTitle>할인</MainTitle>
       </MainTitleDiv>
       <div>
-        {sales?.map((elem: any) => {
+        {sales?.map((elem: saleType) => {
           return (
             <>
               <ItemListStyle

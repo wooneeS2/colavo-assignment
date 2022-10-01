@@ -86,13 +86,13 @@ function ShoppingBasketPage() {
   }, []);
 
   if (selectedItems) {
-    totalAmount = selectedItems.reduce((a: any, b: itemType) => {
+    totalAmount = selectedItems.reduce((a: number, b: itemType) => {
       return a + b.price * b.count;
     }, 0);
   }
 
   if (selectedSales) {
-    totalRate = selectedSales.reduce((a: any, b: saleType) => {
+    totalRate = selectedSales.reduce((a: number, b: saleType) => {
       return a + b.rate;
     }, 0);
   }
@@ -120,12 +120,12 @@ function ShoppingBasketPage() {
                   onClick={(e: React.MouseEvent) => {
                     const target = e.target as HTMLLIElement;
                     const temp = elem.selectedSales.findIndex(
-                      (el: any) => el.name === currentSale.name
+                      (el: saleType) => el.name === currentSale.name
                     );
                     if (temp !== -1) {
                       Object.assign(elem, {
                         selectedSales: elem.selectedSales.filter(
-                          (el: any, index: number) => {
+                          (el: saleType, index: number) => {
                             return index !== temp;
                           }
                         ),
@@ -149,7 +149,7 @@ function ShoppingBasketPage() {
                 <span>
                   {isOpen &&
                   elem.selectedSales.findIndex(
-                    (el: any) => el.name === currentSale.name
+                    (el: saleType) => el.name === currentSale.name
                   ) !== -1 ? (
                     <IconStyle icon={faCheck} />
                   ) : (
