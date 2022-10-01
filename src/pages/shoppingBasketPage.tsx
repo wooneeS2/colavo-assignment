@@ -24,6 +24,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlus, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { itemType, saleType } from 'types/types';
 import { moneyConvertToUSD } from 'utils/moneyConvertToUSD';
+import { useRecoilState } from 'recoil';
+import { globalSelectedItem } from 'recoilState';
 
 const itemCounts = [...new Array(10)].map((_, i) => i + 1);
 
@@ -45,9 +47,10 @@ function ShoppingBasketPage() {
   let totalRate = 0;
   let finalAmount = 0;
 
-  const [selectedItems, setSelectedItems] = useState(
-    JSON.parse(sessionStorage.getItem('selectedItems')!)
+  const [selectedItems, setSelectedItems] = useRecoilState<itemType[] | null>(
+    globalSelectedItem
   );
+
   const [selectedSales, setSelectedSales] = useState(
     JSON.parse(sessionStorage.getItem('selectedSales')!)
   );
@@ -79,6 +82,7 @@ function ShoppingBasketPage() {
   };
 
   useEffect(() => {
+    setSelectedItems(Object.values(data?.data.items));
     selectedSales &&
       selectedItems.forEach((elem: saleType) =>
         Object.assign(elem, { selectedSales })
